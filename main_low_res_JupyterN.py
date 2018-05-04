@@ -1,3 +1,5 @@
+// cell 1 in jupyter notebook
+
 import numpy as np
 import pandas as pd
 from PIL import Image
@@ -9,19 +11,16 @@ from keras.layers import Input
 from scipy.optimize import fmin_l_bfgs_b
 import time
 
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-## Specify paths for 1) content image 2) style image and 3) generated image
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
+// start of cell 2 in jupyter notebook
 
-cImPath = ''
-sImPath = ''
-genImOutputPath = ''
+cImPath = "Capture.PNG"
+sImPath = "Capture2.PNG"
+genImOutputPath = "output.jpg"
 
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-## Image processing
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
-targetHeight = 512
-targetWidth = 512
+// start of cell 3 in jupyter notebook
+
+targetHeight = 32
+targetWidth = 32
 targetSize = (targetHeight, targetWidth)
 
 cImageOrig = Image.open(cImPath)
@@ -38,7 +37,7 @@ gIm0 = np.random.randint(256, size=(targetWidth, targetHeight, 3)).astype('float
 gIm0 = preprocess_input(np.expand_dims(gIm0, axis=0))
 
 gImPlaceholder = K.placeholder(shape=(1, targetWidth, targetHeight, 3))
-
+ 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
 ## Define loss and helper functions
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~##
@@ -142,13 +141,13 @@ P = get_feature_reps(x=cImArr, layer_names=[cLayerName], model=cModel)[0]
 As = get_feature_reps(x=sImArr, layer_names=sLayerNames, model=sModel)
 ws = np.ones(len(sLayerNames))/float(len(sLayerNames))
 
-iterations = 600
+iterations = 100
 x_val = gIm0.flatten()
 start = time.time()
 xopt, f_val, info= fmin_l_bfgs_b(calculate_loss, x_val, fprime=get_grad,
                             maxiter=iterations, disp=True)
 xOut = postprocess_array(xopt)
 xIm = save_original_size(xOut)
-print 'Image saved'
+print('Image saved')
 end = time.time()
-print 'Time taken: {}'.format(end-start)
+print( 'Time taken: {}'.format(end-start))
